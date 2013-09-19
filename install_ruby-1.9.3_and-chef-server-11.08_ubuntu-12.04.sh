@@ -40,7 +40,7 @@ then
 fi
  
 # down to work! install ruby
-curl -L https://raw.github.com/gist/6436478 | bash
+curl -L https://raw.github.com/wk8/chef-server-install/master/install_ruby-1.9.3_ubuntu-12.04.sh | bash
  
 # then install chef-server
 PKG_NAME=chef-server_11.0.8-1.ubuntu.12.04_amd64.deb
