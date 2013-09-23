@@ -56,3 +56,6 @@ cd /tmp && rm -f $PKG_NAME && wget https://opscode-omnibus-packages.s3.amazonaws
 
 # configure chef
 chef-server-ctl reconfigure
+
+# check everything went OK
+chef-server-ctl test
