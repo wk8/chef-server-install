@@ -26,6 +26,13 @@ set_hostname() {
     echo "Setting hostname to $1"
     echo $1 > /etc/hostname
     service hostname restart &> /dev/null
+    # Check that that hostname resolves to something; otherwise add it to /etc/hosts
+    # (see https://tickets.opscode.com/browse/CHEF-3837)
+    host $(hostname) > /dev/null && return 0
+    LINE="127.0.0.1 $(hostname)"
+    echo "Hostname $1 not resolving, appending to /etc/hosts : $LINE"
+    echo "" >> /etc/hosts
+    echo $LINE >> /etc/hosts
 }
 if ! check_fqdn $(hostname)
 then
