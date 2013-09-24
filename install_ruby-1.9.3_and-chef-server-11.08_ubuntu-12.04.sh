@@ -59,3 +59,6 @@ chef-server-ctl reconfigure
 
 # check everything went OK
 chef-server-ctl test
+
+# install chef-client
+curl -L http://www.opscode.com/chef/install.sh | bash
