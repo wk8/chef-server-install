@@ -62,3 +62,7 @@ chef-server-ctl test
 
 # install chef-client
 curl -L http://www.opscode.com/chef/install.sh | bash
+
+# install git
+apt-get update
+apt-get --force-yes --yes install git
