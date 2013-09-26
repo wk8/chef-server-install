@@ -26,13 +26,6 @@ set_hostname() {
     echo "Setting hostname to $1"
     echo $1 > /etc/hostname
     service hostname restart &> /dev/null
-    # Check that that hostname resolves to something; otherwise add it to /etc/hosts
-    # (see https://tickets.opscode.com/browse/CHEF-3837)
-    host $(hostname) > /dev/null && return 0
-    LINE="127.0.0.1 $(hostname)"
-    echo "Hostname $1 not resolving, appending to /etc/hosts : $LINE"
-    echo "" >> /etc/hosts
-    echo $LINE >> /etc/hosts
 }
 if ! check_fqdn $(hostname)
 then
@@ -45,6 +38,12 @@ then
     done
     set_hostname $HOSTNAME
 fi
+# adding self to /etc/hosts is needed to avoid all kinds of errors
+# (see https://tickets.opscode.com/browse/CHEF-3837 and https://tickets.opscode.com/browse/CHEF-4339, amongst others)
+LINE="127.0.0.1 $(hostname)"
+echo "Appending to /etc/hosts : $LINE"
+echo "" >> /etc/hosts
+echo $LINE >> /etc/hosts
  
 # down to work! install ruby
 curl -L https://raw.github.com/wk8/chef-server-install/master/install_ruby-1.9.3_ubuntu-12.04.sh | bash
