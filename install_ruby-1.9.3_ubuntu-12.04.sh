@@ -20,11 +20,20 @@ update-alternatives --install /usr/bin/ruby ruby /usr/bin/ruby1.9.1 400 \
     --slave   /usr/bin/irb irb /usr/bin/irb1.9.1 \
     --slave   /usr/bin/rdoc rdoc /usr/bin/rdoc1.9.1
 update-alternatives --config ruby
-update-alternatives --config gem
+
+# update rubygems
+cd /tmp && rm -f rubygems-2.1.5.tgz
+wget http://production.cf.rubygems.org/rubygems/rubygems-2.1.5.tgz
+tar xvzf rubygems-2.1.5.tgz
+cd rubygems-2.1.5
+ruby setup.rb
+update-alternatives --install /usr/bin/gem gem /usr/bin/gem1.9.1 400
+update-alternatives --config gem && cd
  
 # check that we've been successful
 ruby -v | grep -E "^ruby 1\.9\.3" &> /dev/null && echo "Ruby 1.9.3 successfully installed" || eval 'echo "Wrong ruby version after install!" && exit 1'
- 
+[[ `gem -v` == '2.1.5' ]] && echo "Gem 2.1.5 successfully installed" || eval 'echo "Wrong gem version after install!" && exit 1'
+
 # if we were asked to not uninstall, we can stop here
 [[ $1 == "--dont-uninstall-1.8" ]] && exit 0 || echo "Uninstalling vanilla ruby 1.8.7..." 
  
